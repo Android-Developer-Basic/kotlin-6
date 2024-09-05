@@ -10,6 +10,8 @@ fun main() {
     println(db2.data)
 
     println("db1 === db2: ${db1 === db2}")
+
+    Library.welcome()
 }
 
 class Database private constructor(val data: Map<String, String>) {
@@ -27,5 +29,16 @@ class Database private constructor(val data: Map<String, String>) {
             }
             return instance!!
         }
+    }
+}
+
+object Library {
+    private val name: String by lazy {
+        println("Initializing library...")
+        "Pushkin City Library"
+    }
+
+    fun welcome() {
+        println("Welcome to $name")
     }
 }
