@@ -32,7 +32,6 @@ fun main() {
     println(vaz)
 }
 
-
 // Авто
 class Car(
     val manufacturer: String,
