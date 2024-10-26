@@ -15,56 +15,56 @@ fun main() {
 
 
     println()
-    println(MemoryMonitor.getStackMemoryInfo(1024))  // Предполагаем 1 МБ на поток -Xss1m.
+    println(MemoryMonitor.getInstance().getStackMemoryInfo(1024))  // Предполагаем 1 МБ на поток -Xss1m.
     println()
 
     val initialCapacity = 5_000_000
 
     println("-=Array=-")
-    MemoryMonitor.collectGarbage()
-    println(MemoryMonitor.getHeapMemoryInfo())
+    MemoryMonitor.getInstance().collectGarbage()
+    println(MemoryMonitor.getInstance().getHeapMemoryInfo())
     println()
     val array = IntArray(initialCapacity)
     for(i: Int in 0.. initialCapacity - 1) {
         array[i] = (i+1)*10
     }
-    println(MemoryMonitor.getMemoryUsageDifferenceInfo())
+    println(MemoryMonitor.getInstance().getMemoryUsageDifferenceInfo())
     println()
 
 
     println("-=Set=-")
-    MemoryMonitor.collectGarbage()
-    println(MemoryMonitor.getHeapMemoryInfo())
+    MemoryMonitor.getInstance().collectGarbage()
+    println(MemoryMonitor.getInstance().getHeapMemoryInfo())
     println()
     val set = HashSet<Int>(initialCapacity)
     for(i: Int in 1..initialCapacity) {
         set.add(i*10)
     }
-    println(MemoryMonitor.getMemoryUsageDifferenceInfo())
+    println(MemoryMonitor.getInstance().getMemoryUsageDifferenceInfo())
     println()
 
 
     println("-=HashMap=-")
-    MemoryMonitor.collectGarbage()
-    println(MemoryMonitor.getHeapMemoryInfo())
+    MemoryMonitor.getInstance().collectGarbage()
+    println(MemoryMonitor.getInstance().getHeapMemoryInfo())
     println()
     val hashMap = HashMap<Int, Int>(initialCapacity)
     for(i: Int in 1..initialCapacity) {
         hashMap[i] = i*10
     }
-    println(MemoryMonitor.getMemoryUsageDifferenceInfo())
+    println(MemoryMonitor.getInstance().getMemoryUsageDifferenceInfo())
     println()
 
     println("-=TreeMap=-")
-    MemoryMonitor.collectGarbage()
-    println(MemoryMonitor.getHeapMemoryInfo())
+    MemoryMonitor.getInstance().collectGarbage()
+    println(MemoryMonitor.getInstance().getHeapMemoryInfo())
     println()
 
     val treeMap = HashMap<Int, Int>(initialCapacity)
     for(i: Int in 1..initialCapacity) {
         treeMap[i] = i*10
     }
-    println(MemoryMonitor.getMemoryUsageDifferenceInfo())
+    println(MemoryMonitor.getInstance().getMemoryUsageDifferenceInfo())
     println()
 
 }
@@ -87,7 +87,19 @@ class Database private constructor(val data: Map<String, String>) {
     }
 }
 
-object MemoryMonitor {
+class MemoryMonitor private constructor() {
+
+    companion object {
+        private var instance: MemoryMonitor? = null
+
+        fun getInstance(): MemoryMonitor {
+            if (instance == null) {
+                instance = MemoryMonitor()
+            }
+            return instance!!
+        }
+    }
+
     private val runtime: Runtime by lazy { Runtime.getRuntime() }
 
     // Информация о памяти кучи
