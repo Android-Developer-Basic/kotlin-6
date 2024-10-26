@@ -1,7 +1,5 @@
 package ru.otus.homework.patterns
 
-import java.util.TreeSet
-
 fun main() {
     println("Hello, singleton!")
     println("First call:")
