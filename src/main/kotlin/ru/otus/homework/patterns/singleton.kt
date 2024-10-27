@@ -1,31 +1,18 @@
 package ru.otus.homework.patterns
 
-fun main() {
-    println("Hello, singleton!")
-    println("First call:")
-    val db1 = Database.getInstance()
-    println(db1.data)
-    println("Second call:")
-    val db2 = Database.getInstance()
-    println(db2.data)
+object Menu  {
+    private val menu: MutableMap< String, Int> = mutableMapOf(
+        "iceCream" to 2,
+        "chocolate" to 5,
+        "berries" to 7,
+        "service" to 1
+    )
 
-    println("db1 === db2: ${db1 === db2}")
-}
+    fun getPositionCost(key : String): Int {
+        return menu[key] ?: 0
+    }
 
-class Database private constructor(val data: Map<String, String>) {
-    companion object {
-        private var instance: Database? = null
-
-        fun getInstance(): Database {
-            if (instance == null) {
-                println("Initializing database...")
-                instance = Database(mapOf(
-                    "1" to "One",
-                    "2" to "Two",
-                    "3" to "Three"
-                ))
-            }
-            return instance!!
-        }
+    fun addPositionToMenu(key: String, value: Int) {
+        menu[key] = value
     }
 }
