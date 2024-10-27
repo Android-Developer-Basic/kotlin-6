@@ -1,31 +1,60 @@
 package ru.otus.homework.patterns
 
-fun main() {
-    println("Hello, singleton!")
-    println("First call:")
-    val db1 = Database.getInstance()
-    println(db1.data)
-    println("Second call:")
-    val db2 = Database.getInstance()
-    println(db2.data)
+import kotlin.concurrent.thread
 
-    println("db1 === db2: ${db1 === db2}")
+fun main() {
+    checkSingleton()
 }
 
-class Database private constructor(val data: Map<String, String>) {
+class NewNoSynchronized private constructor() {
     companion object {
-        private var instance: Database? = null
+        private var instsnce: NewNoSynchronized? = null
 
-        fun getInstance(): Database {
-            if (instance == null) {
-                println("Initializing database...")
-                instance = Database(mapOf(
-                    "1" to "One",
-                    "2" to "Two",
-                    "3" to "Three"
-                ))
+        fun getInstance(): NewNoSynchronized {
+
+            if (instsnce == null) {
+                instsnce = NewNoSynchronized()
             }
-            return instance!!
+            return requireNotNull(instsnce)
         }
     }
+}
+
+class NewSynchronized private constructor() {
+    companion object {
+        private var instsnce: NewSynchronized? = null
+
+        fun getInstance(): NewSynchronized {
+
+            if (instsnce == null) {
+                synchronized(NewSynchronized::class.java) {
+
+                    if (instsnce == null) {
+                        instsnce = NewSynchronized()
+                    }
+                }
+            }
+            return requireNotNull(instsnce)
+        }
+    }
+}
+
+fun checkSingleton() {
+    println("Test NewNoSynchronized")
+    repeat(9999) {
+        thread {
+            val inst = NewNoSynchronized.getInstance()
+            val newInst = NewNoSynchronized.getInstance()
+            if (inst != newInst) println("There are different objects $inst and $newInst")
+        }
+    }
+    println("Finish NewNoSynchronized")
+
+    println("Test NewSynchronized")
+    thread {
+        val inst = NewSynchronized.getInstance()
+        val newInst = NewSynchronized.getInstance()
+        if (inst != newInst) println("There are different objects $inst and $newInst")
+    }
+    println("Finish NewSynchronized")
 }
