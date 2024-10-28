@@ -1,31 +1,18 @@
 package ru.otus.homework.patterns
 
 fun main() {
-    println("Hello, singleton!")
-    println("First call:")
-    val db1 = Database.getInstance()
-    println(db1.data)
-    println("Second call:")
-    val db2 = Database.getInstance()
-    println(db2.data)
-
-    println("db1 === db2: ${db1 === db2}")
+   val app1 = App.getInstance()
+   val app2 = App.getInstance()
+   app1.value = 1
+   app2.value = 2
+   println("app1.value == app2.value == 2: ${app1.value == app2.value && app2.value == 2}")
 }
 
-class Database private constructor(val data: Map<String, String>) {
-    companion object {
-        private var instance: Database? = null
-
-        fun getInstance(): Database {
-            if (instance == null) {
-                println("Initializing database...")
-                instance = Database(mapOf(
-                    "1" to "One",
-                    "2" to "Two",
-                    "3" to "Three"
-                ))
-            }
-            return instance!!
-        }
+class App private constructor(){
+    var value: Int = 0
+    companion object{
+        private val instance_: App by lazy { App() }
+        fun getInstance() = instance_
     }
 }
+
