@@ -4,7 +4,7 @@ interface BurgerMaker {
     fun kneadTheDough(): BurgerMaker
     fun makeGroundMeat(meat: Meat): BurgerMaker
     fun bakeBun(): BurgerMaker
-    fun fryBeef(doneness: Doneness): BurgerMaker
+    fun fryPatty(doneness: Doneness): BurgerMaker
     fun assembleBurger(toppings: List<String>): Burger
 }
 
@@ -32,8 +32,8 @@ class ClassicBurgerMaker: BurgerMaker {
         return this
     }
 
-    override fun fryBeef(doneness: Doneness): BurgerMaker {
-        println("Fry beef")
+    override fun fryPatty(doneness: Doneness): BurgerMaker {
+        println("Fry patty")
         patty = "$doneness patty from $groundMeat"
         return this
     }
@@ -76,7 +76,7 @@ class ChiefBurgerMaker(private val burgerMaker: BurgerMaker) {
             .kneadTheDough()
             .makeGroundMeat(Meat.Beef)
             .bakeBun()
-            .fryBeef(Doneness.Medium).assembleBurger(listOf("tomato", "onion", "cheese"))
+            .fryPatty(Doneness.Medium).assembleBurger(listOf("tomato", "onion", "cheese"))
     }
 }
 
