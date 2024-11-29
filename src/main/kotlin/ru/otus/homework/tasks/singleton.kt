@@ -4,7 +4,7 @@ import kotlin.random.Random
 
 fun main() {
     checkSingletonObjects()
-    getNumberToString()
+    getJokes()
     useCommand()
 
 }
@@ -23,12 +23,33 @@ object RandomNumberProvider {
     }
 }
 
-class DecoratorToString {
-    val getStringNumber: String = RandomNumberProvider.number.toString()
+interface PupaLupaJoke {
+    fun getJoke(): String
 }
 
-fun getNumberToString() {
-    println(DecoratorToString().getStringNumber)
+abstract class PupaLupaJokeDecorator(protected val joke: PupaLupaJoke) : PupaLupaJoke {
+    override fun getJoke(): String = joke.getJoke()
+}
+
+val SalaryJoke = object : PupaLupaJoke {
+    override fun getJoke(): String =
+        "Пошли как-то два друга, Лупа и Пупа, получать зарплату. В бухгалтерии все перепутали. Лупа получил за Пупу, а Пупа за Лупу"
+}
+
+class ExplanationDecorator(joke: PupaLupaJoke) : PupaLupaJokeDecorator(joke) {
+    override fun getJoke(): String = "${joke.getJoke()} ну типо за Лупу = залупу"
+}
+
+class LaughDecorator(joke: PupaLupaJoke) : PupaLupaJokeDecorator(joke) {
+    override fun getJoke(): String = "${joke.getJoke()} \nахахавхахвахвахахв"
+}
+
+
+fun getJokes() {
+    println(SalaryJoke.getJoke())
+    println(ExplanationDecorator(SalaryJoke).getJoke())
+    println(LaughDecorator(ExplanationDecorator(SalaryJoke)).getJoke())
+
 }
 
 abstract class Command {
