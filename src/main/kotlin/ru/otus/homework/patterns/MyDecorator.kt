@@ -1,4 +1,7 @@
 package ru.otus.homework.patterns
+/*
+Decorator. Добавление роботу отдельных модулей друг за другом.
+*/
 
 interface Robot {
     fun moduls(): String

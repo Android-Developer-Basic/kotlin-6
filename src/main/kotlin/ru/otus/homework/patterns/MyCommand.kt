@@ -1,4 +1,7 @@
 package ru.otus.homework.patterns
+/*
+Command. Подача команд роботу on или off.
+*/
 
 class Robot1 {
     fun on() {

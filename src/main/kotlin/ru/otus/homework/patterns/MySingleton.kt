@@ -1,4 +1,10 @@
 package ru.otus.homework.patterns
+/*
+Singleton. Один Станок производит детали.
+каждый раз при вызове Machine вызывается один и тот же объект:
+объекты по ссылке равны и счетчик деталей не обнуляется.
+*/
+
 
 fun main() {
     val machine1 = Machine.getInstance("Петя")

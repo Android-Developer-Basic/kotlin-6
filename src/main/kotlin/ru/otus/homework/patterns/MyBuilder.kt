@@ -1,5 +1,8 @@
 package ru.otus.homework.patterns
 
+/*
+Builder. Создаем авто по двум моделям с разным набором комплектующих.
+ */
 
 fun main() {
     // содаем объект factory
