@@ -1,5 +1,8 @@
 package ru.otus.homework.mypatterns
 
+import ru.otus.homework.mypatterns.tank.Direction
+import ru.otus.homework.mypatterns.tank.Tank
+
 interface Command {
     fun execute()
     fun canExecute(): Boolean
@@ -103,61 +106,5 @@ class RefuelTankCommand(tank: Tank, private val fuelAmount: Int) : TankBaseComma
 class RearmTankCommand(tank: Tank, private val ammoAmount: Int) : TankBaseCommand(tank) {
     override fun execute() {
         tank.ammoAmount += ammoAmount
-    }
-}
-
-class Tank {
-    var location = Location(0, 0)
-    var direction = Direction.TOP
-    var ammoAmount = 0
-    var fuel = 0
-}
-
-class Location(var x: Int, var y: Int)
-enum class Direction {
-    TOP, RIGHT, BOTTOM, LEFT
-}
-
-class TankControlPanel(var tank: Tank) {
-    private val _fireCommand = FireTankCommand(tank)
-    private val _moveForwardCommand = MoveForwardTankCommand(tank)
-    private val _moveBackCommand = MoveBackTankCommand(tank)
-    private val _turnRightCommand = TurnRightTankCommand(tank)
-    private val _turnLeftCommand = TurnLeftTankCommand(tank)
-
-    fun fireButtonClick() {
-        executeCommand(_fireCommand)
-    }
-
-    fun rearmButtonClick() {
-        executeCommand(RearmTankCommand(tank, 10))
-    }
-
-    fun refuelButtonClick() {
-        executeCommand(RefuelTankCommand(tank, 100))
-    }
-
-    fun joystickUp(){
-        executeCommand(_moveForwardCommand)
-    }
-
-    fun joystickDown(){
-        executeCommand(_moveBackCommand)
-    }
-
-    fun joystickRight(){
-        executeCommand(_turnRightCommand)
-    }
-
-    fun joystickLeft(){
-        executeCommand(_turnLeftCommand)
-    }
-
-    private fun executeCommand(command: Command) {
-        if (command.canExecute()) {
-            command.execute()
-        }else{
-            println("Can't execute command ${command.javaClass.name}")
-        }
     }
 }

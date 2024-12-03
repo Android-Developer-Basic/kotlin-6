@@ -1,5 +1,8 @@
 package ru.otus.homework.mypatterns
 
+import ru.otus.homework.mypatterns.tank.Direction
+import ru.otus.homework.mypatterns.tank.Tank
+import ru.otus.homework.mypatterns.tank.TankControlPanel
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
