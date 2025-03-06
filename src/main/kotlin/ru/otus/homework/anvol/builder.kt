@@ -73,7 +73,7 @@ class Builder(val builderName: String) {
 }
 
 data class Computer(
-    val builderName: String
+    val builderName: String,
     val cpu: String,
     val motherboard: String,
     val psu: String,
