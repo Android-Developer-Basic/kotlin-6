@@ -29,7 +29,7 @@ fun main() {
     println(dummyComputer)
 }
 
-class Builder(val builderName: String) {
+class Builder(private val builderName: String) {
     private var cpu: String = "Без CPU"
     private var motherboard: String = "Без материнки"
     private var psu: String = "Без блока питания"
