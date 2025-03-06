@@ -1,9 +1,8 @@
 package ru.otus.homework.anvol
 
 fun main() {
-    val builderVasya = Builder("Вася")
-
-    val myComputer = builderVasya.addMotherboard("MSI")
+    val myComputer = Builder("Вася")
+        .addMotherboard("MSI")
         .addCpu("i7")
         .addCpuCooler("Noctua")
         .addRam(listOf("16", "16", "16", "16"))
@@ -20,9 +19,15 @@ fun main() {
         .installSoftware(listOf("Windows 11"))
         .build()
 
-    println(myComputer)
-}
+    val dummyComputer = Builder("тестовая сборка")
+        .addCase("adidas")
+        .addExtras(listOf("Кардридер", "Blu-ray drive"))
+        .addSoundCard("SoundBlaster 3.0")
+        .build()
 
+    println(myComputer)
+    println(dummyComputer)
+}
 
 class Builder(val builderName: String) {
     private var cpu: String = "Без CPU"
@@ -49,11 +54,26 @@ class Builder(val builderName: String) {
     fun installSoftware(software: List<String>) = apply { this.software = software }
 
     fun build(): Computer {
-        return Computer(cpu, motherboard, psu, case, cpuCooler, ram, storage, soundCard, extras, peripherals, software, builderName)
+        return Computer(
+            builderName,
+            cpu,
+            motherboard,
+            psu,
+            case,
+            cpuCooler,
+            ram,
+            storage,
+            soundCard,
+            extras,
+            peripherals,
+            software
+        )
     }
+
 }
 
 data class Computer(
+    val builderName: String
     val cpu: String,
     val motherboard: String,
     val psu: String,
@@ -64,6 +84,5 @@ data class Computer(
     val soundCard: String,
     val extras: List<String>,
     val peripherals: List<String>,
-    val software: List<String>,
-    val builderName: String
+    val software: List<String>
 )
