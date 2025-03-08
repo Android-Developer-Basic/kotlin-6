@@ -5,14 +5,14 @@ import java.time.LocalDateTime
 class Invoker {
     private val transactionHistory: MutableList<TransactionDetails> = mutableListOf()
 
-    fun doTransaction(transaction: Transaction, extraInfo: String? = null) {
+    fun doTransaction(transaction: Transaction, comment: String? = null) {
         transaction.execute()
         transactionHistory.add(
             TransactionDetails(
                 transaction = transaction,
                 amount = transaction.getAmount(),
                 datetime = LocalDateTime.now(),
-                extraInfo = extraInfo
+                comment = comment
             )
         )
     }

@@ -21,6 +21,6 @@ class Transfer(
     }
 
     override fun undo() {
-        receiver.transfer(-amount, receiver.name)
+        receiver.deposit(amount)
     }
 }

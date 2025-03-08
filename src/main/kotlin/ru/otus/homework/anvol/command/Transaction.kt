@@ -12,5 +12,5 @@ data class TransactionDetails(
     val transaction: Transaction,
     val datetime: LocalDateTime,
     val amount: Int,
-    val extraInfo: String? = null
+    val comment: String? = null
 )
