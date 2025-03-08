@@ -29,7 +29,7 @@ object Logger {
     }
 
     private fun output(log: LogInfo) {
-        println("${log.time}\t${log.what}")
+        with (log) { println("${time}\t$level\t${what}") }
     }
 
     fun showLogs(logLevel: LogLevel? = null) {
