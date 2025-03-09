@@ -14,18 +14,17 @@ fun main() {
 
 class Database private constructor(val data: Map<String, String>) {
     companion object {
-        private var instance: Database? = null
-
-        fun getInstance(): Database {
-            if (instance == null) {
-                println("Initializing database...")
-                instance = Database(mapOf(
+        private val instance by lazy {
+            println("Initializing database...")
+            Database(
+                mapOf(
                     "1" to "One",
                     "2" to "Two",
                     "3" to "Three"
-                ))
-            }
-            return instance!!
+                )
+            )
         }
+        @JvmName("getMyInstance")
+        fun getInstance(): Database = instance
     }
 }
