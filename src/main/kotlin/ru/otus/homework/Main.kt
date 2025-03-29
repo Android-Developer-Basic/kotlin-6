@@ -45,6 +45,10 @@ fun main(){
     val margheritaPizza = builder.build()
     println(margheritaPizza)
 
+    director.makePepperoniPizza()
+    val peperoniPizza = builder.build()
+    println(peperoniPizza)
+
     builder.setName("Тестовая").setSize(12).addCheese().addMushrooms()
     val customPizza = builder.build()
     println(customPizza)
