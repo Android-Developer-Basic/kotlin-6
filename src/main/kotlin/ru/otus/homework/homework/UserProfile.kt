@@ -53,17 +53,23 @@ private val emailRegex = Regex("^[A-Za-z](.*)([@])(.+)(\\.)(.+)")
  * Реализация простого [UserProfile].
  */
 private class ProfileImplementation(
-    override var fullName: String,
+    fullName: String,
     email: String
 ) : UserProfile {
-    val vetoable = VetoableEmail(email)
+    val vetoable = VetoableEmail()
+    val nonEmptyStringDelegate = NonEmptyStringDelegate()
+    override var fullName: String by nonEmptyStringDelegate
     override var email: String by vetoable
+
+    init {
+        this.fullName = fullName
+        this.email = email
+    }
+
 }
 
-class VetoableEmail(
-    var email: String
-) {
-
+class VetoableEmail {
+    var email: String = ""
     operator fun setValue(thisRef: Any?, property: KProperty<*>, value: String) {
         if (value.matches(emailRegex))
             email = value
