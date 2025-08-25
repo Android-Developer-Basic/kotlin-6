@@ -20,32 +20,26 @@ class SimpleCoffee : Coffee {
     override fun description() = "Простой кофе"
 }
 
-class MilkDecorator(private val coffee: Coffee) : Coffee {
-    override fun cost(): Int {
-        TODO("Not yet implemented")
-    }
+// Абстрактный базовый класс для декораций
+abstract class AbstractDecorator(protected val decoratedCoffee: Coffee) : Coffee {
+    protected abstract val additionalCost: Int
+    protected abstract val additionalDescription: String
 
-    override fun description(): String {
-        TODO("Not yet implemented")
-    }
+    final override fun cost() = decoratedCoffee.cost() + additionalCost
+    final override fun description() = "${decoratedCoffee.description()}, $additionalDescription"
 }
 
-class SugarDecorator(private val coffee: Coffee) : Coffee {
-    override fun cost(): Int {
-        TODO("Not yet implemented")
-    }
-
-    override fun description(): String {
-        TODO("Not yet implemented")
-    }
+class MilkDecorator(coffee: Coffee) : AbstractDecorator(coffee) {
+    override val additionalCost = 50
+    override val additionalDescription = "молоко"
 }
 
-class VanillaDecorator(private val coffee: Coffee) : Coffee {
-    override fun cost(): Int {
-        TODO("Not yet implemented")
-    }
+class SugarDecorator(decoratedCoffee: Coffee) : AbstractDecorator(decoratedCoffee) {
+    override val additionalCost = 20
+    override val additionalDescription = "сахар"
+}
 
-    override fun description(): String {
-        TODO("Not yet implemented")
-    }
+class VanillaDecorator(decoratedCoffee: Coffee) : AbstractDecorator(decoratedCoffee) {
+    override val additionalCost = 70
+    override val additionalDescription = "ваниль"
 }
