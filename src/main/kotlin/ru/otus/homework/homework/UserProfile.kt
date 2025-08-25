@@ -39,7 +39,9 @@ interface UserProfile {
          * Creates user profile with logging
          */
         fun createWithLogging(fullName: String, email: String): UserProfile.Logging {
-            TODO("Implement `createWithLogging` function")
+            return ProfileImplementationWithLogging(
+                create(fullName, email)
+            )
         }
     }
 }
@@ -66,6 +68,31 @@ private class ProfileImplementation(
         this.email = email
     }
 
+}
+
+/**
+ * Реализация [UserProfile.Logging].
+ */
+private class ProfileImplementationWithLogging(
+    val userProfile: UserProfile
+) : UserProfile.Logging, UserProfile by userProfile {
+    private val log = mutableListOf<String>()
+
+    override var fullName: String
+        get() = userProfile.fullName
+        set(value) {
+            log.add("Changing `fullName` from '${userProfile.fullName}' to '$value'")
+            userProfile.fullName = value
+        }
+
+    override var email: String
+        get() = userProfile.email
+        set(value) {
+            log.add("Changing `email` from '${userProfile.email}' to '$value'")
+            userProfile.email = value
+        }
+
+    override fun getLog(): List<String> = log
 }
 
 class VetoableEmail {
