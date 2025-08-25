@@ -2,6 +2,8 @@
 
 package ru.otus.homework.homework
 
+import kotlin.reflect.KProperty
+
 /**
  * Профиль пользователя
  */
@@ -50,4 +52,26 @@ private val emailRegex = Regex("^[A-Za-z](.*)([@])(.+)(\\.)(.+)")
 /**
  * Реализация простого [UserProfile].
  */
-private class ProfileImplementation(override var fullName: String, override var email: String): UserProfile
+private class ProfileImplementation(
+    override var fullName: String,
+    email: String
+) : UserProfile {
+    val vetoable = VetoableEmail(email)
+    override var email: String by vetoable
+}
+
+class VetoableEmail(
+    var email: String
+) {
+
+    operator fun setValue(thisRef: Any?, property: KProperty<*>, value: String) {
+        if (value.matches(emailRegex))
+            email = value
+        else
+            System.err.println("veto placed on invalid email $value")
+    }
+
+    operator fun getValue(hisRef: Any?, property: KProperty<*>): String {
+        return this.email
+    }
+}
