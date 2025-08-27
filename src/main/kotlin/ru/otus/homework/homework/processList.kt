@@ -7,8 +7,14 @@ inline fun processList(list: List<Int>, action: (Int) -> Unit) {
 }
 
 fun skipThreeAndPrint(list: List<Int>) {
+    var counter = 1
     processList(list) {
-        if (it == 3) return
-        println("Processing $it")
+        if (counter != 3)
+            /* тут пришлось помучиться,
+            * т.к. тесты НЕ проходили, если использовать функцию println()
+            * пришлось переключиться на print(...\n)
+            */
+            print("Processing $it\n")
+        counter ++
     }
 }
