@@ -1,14 +1,14 @@
 package ru.otus.homework.homework
 
-inline fun processList(list: List<Int>, action: (Int) -> Unit) {
-    for (item in list) {
-        action(item)
+inline fun processList(list: List<Int>, action: (Int,Int) -> Unit) {
+    for ((index, item) in list.withIndex()) {
+        action(index, item)
     }
 }
 
 fun skipThreeAndPrint(list: List<Int>) {
-    processList(list) {
-        if (it == 3) return
-        println("Processing $it")
+    processList(list) { index, value ->
+        if (index == 2) return@processList
+        println("Processing $value")
     }
 }

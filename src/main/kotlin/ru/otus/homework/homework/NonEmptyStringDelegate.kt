@@ -5,12 +5,15 @@ import kotlin.reflect.KProperty
 /**
  * Delegate that allows to set non-empty string value
  */
-class NonEmptyStringDelegate() {
-    operator fun getValue(thisRef: Any?, property: KProperty<*>): String {
-        TODO("Implement `getValue` function")
-    }
+class NonEmptyStringDelegate(initialValue: String ="") {
+    private var value = initialValue
+
+    operator fun getValue(thisRef: Any?, property: KProperty<*>): String = value
 
     operator fun setValue(thisRef: Any?, property: KProperty<*>, newValue: String) {
-        TODO("Implement `setValue` function")
+        if (newValue.isBlank()) {
+            return
+        }
+        value = newValue
     }
 }
