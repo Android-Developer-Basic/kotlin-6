@@ -2,6 +2,9 @@
 
 package ru.otus.homework.homework
 
+import java.util.LinkedList
+import kotlin.properties.Delegates
+
 /**
  * Профиль пользователя
  */
@@ -37,7 +40,8 @@ interface UserProfile {
          * Creates user profile with logging
          */
         fun createWithLogging(fullName: String, email: String): UserProfile.Logging {
-            TODO("Implement `createWithLogging` function")
+            return ProfileImplementationWithLogging(
+                create(fullName, email))
         }
     }
 }
@@ -50,4 +54,30 @@ private val emailRegex = Regex("^[A-Za-z](.*)([@])(.+)(\\.)(.+)")
 /**
  * Реализация простого [UserProfile].
  */
-private class ProfileImplementation(override var fullName: String, override var email: String): UserProfile
+private class ProfileImplementation(fullName: String, email: String): UserProfile{
+    override var fullName : String by Delegates.vetoable(fullName) { _, _, newValue ->
+        newValue.isNotBlank()}
+
+    override var email : String by Delegates.vetoable(email) { _, _, newValue ->
+        newValue.isNotBlank() && emailRegex.matches(newValue)}
+}
+
+private class ProfileImplementationWithLogging(private val userProfile: UserProfile) : UserProfile.Logging, UserProfile by userProfile {
+    private val log = LinkedList<String>()
+
+    override var fullName: String
+        get() = userProfile.fullName
+        set(value) {
+            log.add("Changing `fullName` from '${userProfile.fullName}' to '$value'")
+            userProfile.fullName = value
+        }
+
+    override var email: String
+        get() = userProfile.email
+        set(value) {
+            log.add("Changing `email` from '${userProfile.email}' to '$value'")
+            userProfile.email = value
+        }
+
+    override fun getLog(): List<String> = log
+}
