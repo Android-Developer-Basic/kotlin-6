@@ -63,7 +63,6 @@ private class ProfileImplementation(fullName: String, email: String): UserProfil
 }
 
 private class ProfileImplementationWithLogging(private val userProfile: UserProfile) : UserProfile.Logging, UserProfile by userProfile {
-
     private val log = LinkedList<String>()
 
     override var fullName: String
