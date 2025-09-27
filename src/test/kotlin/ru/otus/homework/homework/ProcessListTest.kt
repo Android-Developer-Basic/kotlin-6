@@ -5,7 +5,7 @@ import java.io.ByteArrayOutputStream
 import java.io.PrintStream
 import org.junit.jupiter.api.Assertions.*
 
-class ProcessListTest {
+class  ProcessListTest {
     @Test
     fun testSkipThreeAndPrint() {
         val output = ByteArrayOutputStream()
