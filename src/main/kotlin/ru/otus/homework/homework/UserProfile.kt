@@ -2,6 +2,9 @@
 
 package ru.otus.homework.homework
 
+import kotlin.properties.Delegates
+import kotlin.reflect.KProperty
+
 /**
  * Профиль пользователя
  */
@@ -37,7 +40,10 @@ interface UserProfile {
          * Creates user profile with logging
          */
         fun createWithLogging(fullName: String, email: String): UserProfile.Logging {
-            TODO("Implement `createWithLogging` function")
+            require(fullName.isNotBlank()) { "Full name should not be empty" }
+            require(email.isNotBlank() && emailRegex.matches(email)) { "Invalid email" }
+
+            return ProfileWithLoggingImplementation(fullName, email)
         }
     }
 }
@@ -50,4 +56,31 @@ private val emailRegex = Regex("^[A-Za-z](.*)([@])(.+)(\\.)(.+)")
 /**
  * Реализация простого [UserProfile].
  */
-private class ProfileImplementation(override var fullName: String, override var email: String): UserProfile
+private class ProfileImplementation(initFullName: String, initEmail: String): UserProfile{
+    override var fullName: String by NonEmptyStringDelegate(initFullName)
+    override var email: String by Delegates.vetoable<String>(initEmail){
+            property: KProperty<*>, oldValue, newValue -> emailRegex.matches(newValue)
+    }
+}
+
+private class ProfileWithLoggingImplementation(initFullName: String, initEmail: String): UserProfile.Logging{
+
+    private val log: MutableList<String> = mutableListOf()
+
+    override var fullName: String by
+        LoggingStringDecorator(
+            NonEmptyStringDecorator(
+                StringProperty(initFullName)
+            ),
+            log
+        )
+
+    override var email: String by LoggingStringDecorator(
+        EmailStringDecorator(
+            StringProperty(initEmail)
+        ),
+        log
+    )
+
+    override fun getLog(): List<String> = log
+}
