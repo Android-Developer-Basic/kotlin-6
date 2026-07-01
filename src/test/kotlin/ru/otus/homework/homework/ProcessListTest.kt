@@ -13,7 +13,7 @@ class ProcessListTest {
 
         skipThreeAndPrint(listOf(1, 2, 3, 4))
 
-        val expected = "Processing 1\nProcessing 2\nProcessing 4\n"
+        val expected = "Processing 1\r\nProcessing 2\r\nProcessing 4\r\n"
         assertEquals(expected, output.toString())
     }
 }
