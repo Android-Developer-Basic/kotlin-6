@@ -2,6 +2,8 @@
 
 package ru.otus.homework.homework
 
+import kotlin.properties.Delegates
+
 /**
  * Профиль пользователя
  */
@@ -37,7 +39,35 @@ interface UserProfile {
          * Creates user profile with logging
          */
         fun createWithLogging(fullName: String, email: String): UserProfile.Logging {
-            TODO("Implement `createWithLogging` function")
+            val profile = create(fullName, email)
+            val log = mutableListOf<String>()
+
+            return object : UserProfile.Logging {
+
+                override var fullName: String
+                    get() = profile.fullName
+                    set(value) {
+                        val old = profile.fullName
+                        profile.fullName = value
+
+                        if (old != profile.fullName) {
+                            log += "Changing `fullName` from '$old' to '${profile.fullName}'"
+                        }
+                    }
+
+                override var email: String
+                    get() = profile.email
+                    set(value) {
+                        val old = profile.email
+                        profile.email = value
+
+                        if (old != profile.email) {
+                            log += "Changing `email` from '$old' to '${profile.email}'"
+                        }
+                    }
+
+                override fun getLog(): List<String> = log
+            }
         }
     }
 }
@@ -50,4 +80,16 @@ private val emailRegex = Regex("^[A-Za-z](.*)([@])(.+)(\\.)(.+)")
 /**
  * Реализация простого [UserProfile].
  */
-private class ProfileImplementation(override var fullName: String, override var email: String): UserProfile
+private class ProfileImplementation(
+    fullName: String,
+    email: String
+): UserProfile {
+
+    override var email: String by Delegates.vetoable(email) { _, _, newValue ->
+        emailRegex.matches(newValue)
+    }
+
+    override var fullName: String by Delegates.vetoable(fullName) { _, _, newValue ->
+        newValue.isNotBlank()
+    }
+}
