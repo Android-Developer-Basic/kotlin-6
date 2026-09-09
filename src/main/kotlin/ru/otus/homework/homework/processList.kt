@@ -7,8 +7,8 @@ inline fun processList(list: List<Int>, action: (Int) -> Unit) {
 }
 
 fun skipThreeAndPrint(list: List<Int>) {
-    processList(list) {
-        if (it == 3) return
-        println("Processing $it")
+    processList(list) { number ->
+        if (number == 3) return@processList
+        print("Processing $number\n")
     }
 }
